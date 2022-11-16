@@ -1,22 +1,49 @@
 from tkinter import *
 from Entities import *
+import importlib
+from typing import Type, TypeVar
+
 import time
+
+class Scene:
+    def __init__(self, win):
+        self.entityHost = EntityHost(win)
+        self.cameraPosition = Vector2(0,0)
+        self.onStart()
+
+    def onStart(self):
+        pass
+
+    def update(self):
+        pass
 
 
 class GameWindow:
+    T = TypeVar("T", bound=Scene)
+
     def __init__(self, width, height):
         self.updating = True
         self.refreshRate = 1
         self.win = Tk()
         self.win.geometry(str(width) + "x" + str(height))
-        self.entityHost = EntityHost(self)
         self.canvas = Canvas(self.win, bg="black", height=height, width=width)
         self.canvas.pack()
+        self.widgets = []
+        self.scene = None
 
-        self.lastTime = time.time()
+    def addWidget(self, widget):
+        self.widgets.append(widget)
+
+    def nextScene(self, scene: Type[T]) -> T:
+        self.canvas.delete("all")
+        for widget in self.widgets:
+            widget.destroy()
+        self.scene = scene(self)
+
 
     def onUpdate(self):
-        self.entityHost.update()
+        self.scene.entityHost.update()
+        self.scene.update()
         self.win.after(self.refreshRate, self.onUpdate)
 
     def update(self):

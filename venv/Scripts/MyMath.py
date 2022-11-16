@@ -21,12 +21,12 @@ class Vector2:
     def __init__(self, x, y):
         self.x, self.y = x, y
 
-    def __iadd__(self, vec):
+    def __add__(self, vec):
         self.x += vec.x
         self.y += vec.y
         return self
 
-    def __isub__(self, vec):
+    def __sub__(self, vec):
         self.x -= vec.x
         self.y -= vec.y
         return self
@@ -44,6 +44,19 @@ def rectIntersecting(r1, r2):
            pos1.y < pos2.y + bounds2.y and \
            pos1.y + bounds1.y > pos2.y
 
+def create_circle(x, y, r, canvas, color):
+    x0 = x - r
+    y0 = y - r
+    x1 = x + r
+    y1 = y + r
+    return canvas.create_oval(x0, y0, x1, y1, fill=color)
+
+def edit_circle(x, y, r, circle, canvas):
+    x0 = x - r
+    y0 = y - r
+    x1 = x + r
+    y1 = y + r
+    canvas.coords(circle, x0, y0, x1, y1)
 
 def AABBresolution(body1, body2):
     col1 = body1.getModule("Body2D")
@@ -79,4 +92,5 @@ def AABBresolution(body1, body2):
             rb1.vel.y = 0
             col1.colliding = True
 
+    print(resolution.y)
     rb1.pos += resolution

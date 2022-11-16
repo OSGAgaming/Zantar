@@ -131,7 +131,10 @@ class VerletSystem(EntitySystem):
                 p2rb.pos.x -= offsetX
                 p2rb.pos.y -= offsetY
 
-            self.parent.window.canvas.coords(self.lines[(p1, p2)], p1rb.pos.x, p1rb.pos.y, p2rb.pos.x, p2rb.pos.y)
+            win = self.parent.window
+            cPos = win.scene.cameraPosition
+
+            win.canvas.coords(self.lines[(p1, p2)], p1rb.pos.x - cPos.x, p1rb.pos.y - cPos.y, p2rb.pos.x - cPos.x, p2rb.pos.y - cPos.y)
 
     def update(self):
         self.updatePoints()

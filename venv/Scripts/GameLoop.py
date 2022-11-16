@@ -25,7 +25,7 @@ def createVine(posX, posY, sepX, sepY, noOfChains, scene):
             scene.entityHost.systems["VerletBody"].bindPoints(boxes[i - 1], box, math.sqrt(sepX * sepX + sepY * sepY))
             if(i == noOfChains - 1):
                 box.onInit += lambda e=box: tipIndicatorsInit(e)
-                box.onUpdate += lambda e=box: tipIndicatorsUpdate(e, scene.cameraPosition)
+                box.onUpdate += lambda e=box: tipIndicatorsUpdate(e, scene.cameraPosition, scene.player)
 
         scene.entityHost.addEntity(box)
         boxes.append(box)
@@ -38,6 +38,12 @@ def createTerrain(posX, posY, width, height, scene):
     terrain.onInit += lambda e=terrain: sqaureEntityInitialise(e)
     scene.entityHost.addEntity(terrain)
 
+def serializeRectanglesIntoTerrain(text, scene):
+    txtContent = open(text).read()
+    rects = txtContent.split("|")
+    for rect in rects:
+        coords = rect.split(" ")
+        createTerrain(int(coords[0]), int(coords[1]), int(coords[2]), int(coords[3]), scene)
 
 class MainMenu(Scene):
     def onStart(self):
@@ -52,30 +58,27 @@ class MainMenu(Scene):
 class Level1(Scene):
     def __init__(self, win):
         self.vines = []
+        self.player = None
         Scene.__init__(self, win)
 
     def onStart(self):
-        player = Entity([RigidBody(Vector2(10, 10), Vector2(0, 0), drag=0.998), Body2D(Vector2(10, 10))])
-        player.onUpdate += lambda e=player: sqaureEntityUpdate(e, self.cameraPosition)
-        player.onUpdate += lambda e=player: playerMovement(e)
-        player.onInit += lambda e=player: sqaureEntityInitialise(e)
-        player.onUpdate += lambda e=player: playerInit(e)
+        self.player = Entity([RigidBody(Vector2(50, 30), Vector2(0, 0), drag=0.998), Body2D(Vector2(16, 16))])
+        self.player.onUpdate += lambda e=self.player: sqaureEntityUpdate(e, self.cameraPosition)
+        self.player.onUpdate += lambda e=self.player: playerMovement(e)
+        self.player.onInit += lambda e=self.player: sqaureEntityInitialise(e)
+        self.player.onUpdate += lambda e=self.player: playerInit(e)
 
-        self.entityHost.addEntity(player)
+        self.entityHost.addEntity(self.player)
 
-        createTerrain(0, 100, 100, 300, self)
-        createTerrain(0, 400, 800, 100, self)
-        createTerrain(700, 100, 100, 300, self)
+        serializeRectanglesIntoTerrain("Level1Terrain.txt", self)
 
         createVine(500, 50, 20, 20, 6, self)
         createVine(300, 50, 40, 30, 6, self)
 
         self.cameraPosition.y = 1280
 
-
-
     def update(self):
-        self.cameraPosition.y *= 0.998
+        self.cameraPosition.y *= 0.99
 
 
 Window.nextScene(MainMenu)

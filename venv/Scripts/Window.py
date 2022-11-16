@@ -21,12 +21,12 @@ class Scene:
 class GameWindow:
     T = TypeVar("T", bound=Scene)
 
-    def __init__(self, width, height):
+    def __init__(self, width, height, bkg = "white"):
         self.updating = True
         self.refreshRate = 1
         self.win = Tk()
         self.win.geometry(str(width) + "x" + str(height))
-        self.canvas = Canvas(self.win, bg="black", height=height, width=width)
+        self.canvas = Canvas(self.win, bg=bkg, height=height, width=width)
         self.canvas.pack()
         self.widgets = []
         self.scene = None

@@ -31,14 +31,14 @@ def sqaureEntityInitialise(entity):
     sizeOfBox = Vector2(2, 2)
     if entity.hasModule("Body2D"):
         sizeOfBox = entity.getModule("Body2D").bounds
-    entity.entityFields["rect"] = entity.window.canvas.create_rectangle(0, 0, sizeOfBox.x, sizeOfBox.y, outline="white", fill="white")
+    entity.entityFields["rect"] = entity.window.canvas.create_rectangle(0, 0, sizeOfBox.x, sizeOfBox.y, outline="black", fill="black")
 
 
 def playerInit(entity):
-    entity.entityFields["playerMovement"] = 0.001
+    entity.entityFields["playerMovement"] = 0.003
     entity.entityFields["canJump"] = False
-    entity.entityFields["JumpForce"] = 0.3
-    entity.getModule("RigidBody").mass = 0.001
+    entity.entityFields["JumpForce"] = 1
+    entity.getModule("RigidBody").mass = 0.007
 
 
 def playerMovement(entity):
@@ -59,12 +59,16 @@ def playerMovement(entity):
     if "w" in currentKeysPressed and entity.entityFields["canJump"]:
         rb.vel.y -= entity.entityFields["JumpForce"]
 
-def tipIndicatorsUpdate(entity, camera):
-   rb = entity.getModule("RigidBody")
-   edit_circle(rb.pos.x - camera.x, rb.pos.y - camera.y, 4,entity.entityFields["circle"],entity.window.canvas)
+
+def tipIndicatorsUpdate(entity, camera, player):
+    rb = entity.getModule("RigidBody")
+    rbPlayer = player.getModule("RigidBody")
+
+    dist = math.sqrt((rbPlayer.pos.x - rb.pos.x) ** 2 + (rbPlayer.pos.y - rb.pos.y) ** 2)
+    radius = max(0,(100 - dist) / 25)
+    edit_circle(rb.pos.x - camera.x, rb.pos.y - camera.y, radius, entity.entityFields["circle"], entity.window.canvas)
+
 
 def tipIndicatorsInit(entity):
     rb = entity.getModule("RigidBody")
     entity.entityFields["circle"] = create_circle(rb.pos.x, rb.pos.y, 4, entity.window.canvas, "yellow")
-
-

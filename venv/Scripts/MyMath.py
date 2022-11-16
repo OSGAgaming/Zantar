@@ -92,5 +92,4 @@ def AABBresolution(body1, body2):
             rb1.vel.y = 0
             col1.colliding = True
 
-    print(resolution.y)
     rb1.pos += resolution

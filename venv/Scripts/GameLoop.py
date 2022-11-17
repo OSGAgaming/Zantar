@@ -20,9 +20,6 @@ def createVine(posX, posY, sepX, sepY, noOfChains, scene):
             Vector2(posX + i * sepX, posY + i * sepY),
             True if i == 0 else False)])
 
-        box.onUpdate += lambda e=box: sqaureEntityUpdate(e, scene.getCameraPosition())
-        box.onInit += lambda e=box: sqaureEntityInitialise(e)
-
         if i > 0:
             scene.entityHost.systems["VerletBody"].bindPoints(boxes[i - 1], box, math.sqrt(sepX * sepX + sepY * sepY))
             if(i == noOfChains - 1):

@@ -50,7 +50,7 @@ def create_circle(x, y, r, canvas, color):
     y0 = y - r
     x1 = x + r
     y1 = y + r
-    return canvas.create_oval(x0, y0, x1, y1, fill=color)
+    return canvas.create_oval(x0, y0, x1, y1, fill=color, outline="")
 
 def edit_circle(x, y, r, circle, canvas):
     x0 = x - r

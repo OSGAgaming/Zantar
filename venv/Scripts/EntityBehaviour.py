@@ -40,11 +40,11 @@ def sqaureEntityInitialise(entity):
 def playerInit(entity):
     entity.entityFields["playerMovement"] = 0.003
     entity.entityFields["canJump"] = False
-    entity.entityFields["JumpForce"] = 1
+    entity.entityFields["JumpForce"] = 1.1
     entity.entityFields["HoldingVine"] = None
     entity.entityFields["HoldCooldown"] = 0
 
-    entity.getModule("RigidBody").mass = 0.007
+    entity.getModule("RigidBody").mass = 0.008
 
 
 def playerMovement(entity, scene):
@@ -68,7 +68,7 @@ def playerMovement(entity, scene):
                 currentDist = dist
                 closestVine = vine[1]
 
-        if closestVine is not None and currentDist < 50:
+        if closestVine is not None and currentDist < 35:
             if "e" in currentKeysPressed and entity.entityFields["HoldCooldown"] == 0:
                 entity.entityFields["HoldingVine"] = closestVine
                 entity.entityFields["HoldCooldown"] = 120
@@ -119,7 +119,7 @@ def tipIndicatorsUpdate(entity, camera, player):
 
 def tipIndicatorsInit(entity):
     rb = entity.getModule("RigidBody")
-    entity.entityFields["circle"] = create_circle(rb.pos.x, rb.pos.y, 4, entity.window.canvas, "yellow")
+    entity.entityFields["circle"] = create_circle(rb.pos.x, rb.pos.y, 4, entity.window.canvas, "black")
 
 
 def groundParticleUpdate(entity, scene):

@@ -1,3 +1,4 @@
+
 class Event(object):
     def __init__(self):
         self.methods = []
@@ -65,7 +66,7 @@ def AABBresolution(body1, body2):
     rb1 = body1.getModule("RigidBody")
     rb2 = body2.getModule("RigidBody")
 
-    if rb2.ifSimulated: return
+    if rb2.ifSimulated or not rb1.ifSimulated: return
 
     lastPosX1 = rb1.pos.x - rb1.vel.x * 9.81
     lastPosY1 = rb1.pos.y - rb1.vel.y * 9.81

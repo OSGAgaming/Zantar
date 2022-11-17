@@ -99,7 +99,7 @@ class VerletSystem(EntitySystem):
         p2rb = p2.getModule("RigidBody")
 
         self.lines[(p1, p2)] = self.parent.window.canvas.create_line(p1rb.pos.x, p1rb.pos.y, p2rb.pos.x, p2rb.pos.y,
-                                                                     fill="white")
+                                                                     fill="black", width = 3)
 
     def updateConstraints(self):
         for constraint in self.constraints:
@@ -132,7 +132,7 @@ class VerletSystem(EntitySystem):
                 p2rb.pos.y -= offsetY
 
             win = self.parent.window
-            cPos = win.scene.cameraPosition
+            cPos = win.scene.getCameraPosition()
 
             win.canvas.coords(self.lines[(p1, p2)], p1rb.pos.x - cPos.x, p1rb.pos.y - cPos.y, p2rb.pos.x - cPos.x, p2rb.pos.y - cPos.y)
 
@@ -156,7 +156,6 @@ class CollisionSystem(EntitySystem):
 
     def update(self):
         self.broadPhase()
-        pass
 
 
 class RigidBody(EntityModifier):
